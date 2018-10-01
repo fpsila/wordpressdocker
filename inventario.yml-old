@@ -1,0 +1,19 @@
+---
+- hosts: docker
+  remote_user: root
+  become_user: yes
+  tasks:
+    - name: "Executa o conatainer Mysql"
+      docker_container:
+      name: meubanco
+      image: mysql:5.6
+      env:
+        MYSQL_ROOT_PASSWORD: senha123
+    - name: "Executa o conatainer Wordpress"
+      docker_container:
+      name: meusite
+      image: wordpress
+      links:
+        - "meubanco:mysql"
+      ports:
+        - "80:80"
